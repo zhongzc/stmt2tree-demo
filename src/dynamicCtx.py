@@ -6,11 +6,8 @@ class DynamicContext:
         DynamicContext.__stmts.append(statment)
 
     @staticmethod
-    def catchStatments(ModClass):
-        parentStmts = ModClass.statements[:]
-        DynamicContext.__stmts.extend(parentStmts)
-
-        ModClass.statements = DynamicContext.__stmts
+    def catchStatments(oldStmts):
+        DynamicContext.__stmts.extend(oldStmts[:])
+        result = DynamicContext.__stmts
         DynamicContext.__stmts = []
-
-        return ModClass
+        return result

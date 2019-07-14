@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from dynamicCtx import DynamicContext
 
-# 定义少量语法树节点
+
 class Node:
     def __add__(self, other):
         exp = ('+', self, other)
@@ -19,9 +19,25 @@ class Node:
 
 @dataclass
 class Lit(Node):
-    v: int
+    value: int
+
+    def match(self, matcher):
+        return matcher.lit(self)
 
 
 @dataclass
 class Var(Node):
-    v: str = '<unknown>'
+    name: str = '<unknown>'
+    owner: type = None
+
+    def match(self, matcher):
+        return matcher.var(self)
+
+
+@dataclass
+class Ref(Node):
+    ref: object
+    visitor: type
+
+    def match(self, matcher):
+        return matcher.ref(self)
